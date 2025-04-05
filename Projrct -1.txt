@@ -1,0 +1,504 @@
+namespace TechShop_OOPS
+{
+    class Implementation
+    {
+        public class Customer
+        {
+            public int CustomerID;
+            public string FirstName;
+            public string LastName;
+            public string Email;
+            public string Phone;
+            public string Address;
+            public int TotalOrders;
+
+            public Customer(int customerID, string firstName, string lastName, string email, string phone, string address)
+            {
+                this.CustomerID = customerID;
+                this.FirstName = firstName;
+                this.LastName = lastName;
+                this.Email = email;
+                this.Phone = phone;
+                this.Address = address;
+                this.TotalOrders = 0;
+            }
+
+            public void AddOrder()
+            {
+                TotalOrders++;
+            }
+            public int CalculateTotalOrders()
+            {
+                return TotalOrders;
+            }
+            public void GetCustomerDetails()
+            {
+                Console.WriteLine($"CustomerID: {CustomerID}");
+                Console.WriteLine($"Name: {FirstName} {LastName}");
+                Console.WriteLine($"Email: {Email}");
+                Console.WriteLine($"Phone: {Phone}");
+                Console.WriteLine($"Address: {Address}");
+                Console.WriteLine($"Total Orders Placed: {CalculateTotalOrders()}");
+            }
+            public void UpdateCustomerInfo(string email, string phone, string address)
+            {
+                this.Email = email;
+                this.Phone = phone;
+                this.Address = address;
+                Console.WriteLine("Customer update successful");
+            }
+        }
+        public class Product
+        {
+            public int ProductID;
+            public string ProductName;
+            public string Description;
+            public decimal Price;
+
+            public Product(int productID, string productName, string description, decimal price)
+            {
+                this.ProductID = productID;
+                this.ProductName = productName;
+                this.Description = description;
+                this.Price = price;
+            }
+
+
+
+            public void GetProductDetails()
+            {
+                Console.WriteLine($"ProductID: {ProductID}");
+                Console.WriteLine($"Name: {ProductName}");
+                Console.WriteLine($"Description: {Description}");
+                Console.WriteLine($"Price: Rs{Price}");
+            }
+
+            public void UpdateProductInfo(string description, decimal price)
+            {
+                this.Description = description;
+                this.Price = price;
+                Console.WriteLine("Product update successful");
+            }
+        }
+
+        public class Order
+        {
+            public int OrderID;
+            public Customer Customer;
+            public DateTime OrderDate;
+            public decimal TotalAmount;
+            public string OrderStatus;
+            public Product Product;  
+            public int Quantity;
+
+
+            public Order(int orderID, Customer customer, Product product, int quantity)
+            {
+                this.OrderID = orderID;
+                this.Customer = customer;
+                this.OrderDate = DateTime.Now;
+                this.Product = product;
+                this.Quantity = quantity;
+                this.TotalAmount = product.Price * quantity;
+                this.OrderStatus = "Processing";
+
+
+            }
+            public decimal CalculateTotalAmount()
+            {
+                return Product.Price * Quantity;
+            }
+
+            public void GetOrderDetails()
+            {
+                Console.WriteLine($"Order ID: {OrderID}");
+                Console.WriteLine($"Customer: {Customer.FirstName} {Customer.LastName}");
+                Console.WriteLine($"Order Date: {OrderDate}");
+                Console.WriteLine($"Total Amount: {TotalAmount}");
+                Console.WriteLine($"Status: {OrderStatus}");
+            }
+
+            public void UpdateOrderStatus(string status)
+            {
+                this.OrderStatus = status;
+                Console.WriteLine("Order status updated successful");
+            }
+
+            public void CancelOrder()
+            {
+                this.OrderStatus = "Canceled";
+                Console.WriteLine("Order has  canceled");
+            }
+        }
+
+        public class OrderDetails
+        {
+            public int OrderDetailID;
+            public Order Order;
+            public Product Product;
+            public int Quantity;
+
+           
+            public OrderDetails(int orderDetailID, Order order, Product product, int quantity)
+            {
+                this.OrderDetailID = orderDetailID;
+                this.Order = order;
+                this.Product = product;
+                this.Quantity = quantity;
+            }
+
+            public decimal CalculateSubtotal()
+            {
+                return Quantity * Product.Price;
+            }
+
+            public void GetOrderDetailInfo()
+            {
+                Console.WriteLine($"Order Detail ID: {OrderDetailID}");
+                Console.WriteLine($"Product: {Product.ProductName}");
+                Console.WriteLine($"Quantity: {Quantity}");
+                Console.WriteLine($"Subtotal: {CalculateSubtotal()}");
+            }
+
+            public void UpdateQuantity(int newQuantity)
+            {
+                this.Quantity = newQuantity;
+                Console.WriteLine("Order quantity updated successfully");
+            }
+
+            public decimal AddDiscount(decimal discountPercentage)
+            {
+                decimal discountAmount = (CalculateSubtotal() * discountPercentage) / 100;
+                return CalculateSubtotal() - discountAmount;
+            }
+        }
+
+        public class Inventory
+        {
+            public int InventoryID;
+            public Product Product;
+            public int QuantityInStock;
+            public DateTime LastStockUpdate;
+
+            public Inventory(int inventoryID, Product product, int quantityInStock)
+            {
+                this.InventoryID = inventoryID;
+                this.Product = product;
+                this.QuantityInStock = quantityInStock;
+                this.LastStockUpdate = DateTime.Now;
+            }
+
+            public void UpdateStockQuantity(int newQuantity)
+            {
+                if (newQuantity >= 0)
+                {
+                    this.QuantityInStock = newQuantity;
+                    this.LastStockUpdate = DateTime.Now;
+                    Console.WriteLine("Stock quantity updated successful");
+                }
+                else
+                {
+                    Console.WriteLine("Invalid stock quantity");
+                }
+            }
+
+            public void AddToInventory(int quantity)
+            {
+                this.QuantityInStock += quantity;
+                this.LastStockUpdate = DateTime.Now;
+            }
+
+            public void RemoveFromInventory(int quantity)
+            {
+                if (this.QuantityInStock >= quantity)
+                {
+                    this.QuantityInStock -= quantity;
+                    this.LastStockUpdate = DateTime.Now;
+                    Console.WriteLine($"{quantity} items removed from inventory.");
+                }
+                else
+                {
+                    Console.WriteLine("Noenough stock available.");
+                }
+            }
+
+            public bool IsProductAvailable(int quantityToCheck)
+            {
+                return this.QuantityInStock >= quantityToCheck;
+            }
+
+            public decimal GetInventoryValue()
+            {
+                return QuantityInStock * Product.Price;
+            }
+
+            public bool IsLowStock(int threshold)
+            {
+                return QuantityInStock < threshold;
+            }
+
+            public bool IsOutOfStock()
+            {
+                return QuantityInStock == 0;
+            }
+
+            public void ListAllProducts()
+            {
+                Console.WriteLine($"Product: {this.Product.ProductName}, Quantity in Stock: {this.QuantityInStock}");
+            }
+        }
+    }
+}
+
+namespace TechShop_OOPS
+{
+    class Implementation
+    {
+        public class Customer
+        {
+            public int CustomerID;
+            public string FirstName;
+            public string LastName;
+            public string Email;
+            public string Phone;
+            public string Address;
+            public int TotalOrders;
+
+            public Customer(int customerID, string firstName, string lastName, string email, string phone, string address)
+            {
+                this.CustomerID = customerID;
+                this.FirstName = firstName;
+                this.LastName = lastName;
+                this.Email = email;
+                this.Phone = phone;
+                this.Address = address;
+                this.TotalOrders = 0;
+            }
+
+            public void AddOrder()
+            {
+                TotalOrders++;
+            }
+            public int CalculateTotalOrders()
+            {
+                return TotalOrders;
+            }
+            public void GetCustomerDetails()
+            {
+                Console.WriteLine($"CustomerID: {CustomerID}");
+                Console.WriteLine($"Name: {FirstName} {LastName}");
+                Console.WriteLine($"Email: {Email}");
+                Console.WriteLine($"Phone: {Phone}");
+                Console.WriteLine($"Address: {Address}");
+                Console.WriteLine($"Total Orders Placed: {CalculateTotalOrders()}");
+            }
+            public void UpdateCustomerInfo(string email, string phone, string address)
+            {
+                this.Email = email;
+                this.Phone = phone;
+                this.Address = address;
+                Console.WriteLine("Customer update successful");
+            }
+        }
+        public class Product
+        {
+            public int ProductID;
+            public string ProductName;
+            public string Description;
+            public decimal Price;
+
+            public Product(int productID, string productName, string description, decimal price)
+            {
+                this.ProductID = productID;
+                this.ProductName = productName;
+                this.Description = description;
+                this.Price = price;
+            }
+
+
+
+            public void GetProductDetails()
+            {
+                Console.WriteLine($"ProductID: {ProductID}");
+                Console.WriteLine($"Name: {ProductName}");
+                Console.WriteLine($"Description: {Description}");
+                Console.WriteLine($"Price: Rs{Price}");
+            }
+
+            public void UpdateProductInfo(string description, decimal price)
+            {
+                this.Description = description;
+                this.Price = price;
+                Console.WriteLine("Product update successful");
+            }
+        }
+
+        public class Order
+        {
+            public int OrderID;
+            public Customer Customer;
+            public DateTime OrderDate;
+            public decimal TotalAmount;
+            public string OrderStatus;
+            public Product Product;  
+            public int Quantity;
+
+
+            public Order(int orderID, Customer customer, Product product, int quantity)
+            {
+                this.OrderID = orderID;
+                this.Customer = customer;
+                this.OrderDate = DateTime.Now;
+                this.Product = product;
+                this.Quantity = quantity;
+                this.TotalAmount = product.Price * quantity;
+                this.OrderStatus = "Processing";
+
+
+            }
+            public decimal CalculateTotalAmount()
+            {
+                return Product.Price * Quantity;
+            }
+
+            public void GetOrderDetails()
+            {
+                Console.WriteLine($"Order ID: {OrderID}");
+                Console.WriteLine($"Customer: {Customer.FirstName} {Customer.LastName}");
+                Console.WriteLine($"Order Date: {OrderDate}");
+                Console.WriteLine($"Total Amount: {TotalAmount}");
+                Console.WriteLine($"Status: {OrderStatus}");
+            }
+
+            public void UpdateOrderStatus(string status)
+            {
+                this.OrderStatus = status;
+                Console.WriteLine("Order status updated successful");
+            }
+
+            public void CancelOrder()
+            {
+                this.OrderStatus = "Canceled";
+                Console.WriteLine("Order has  canceled");
+            }
+        }
+
+        public class OrderDetails
+        {
+            public int OrderDetailID;
+            public Order Order;
+            public Product Product;
+            public int Quantity;
+
+           
+            public OrderDetails(int orderDetailID, Order order, Product product, int quantity)
+            {
+                this.OrderDetailID = orderDetailID;
+                this.Order = order;
+                this.Product = product;
+                this.Quantity = quantity;
+            }
+
+            public decimal CalculateSubtotal()
+            {
+                return Quantity * Product.Price;
+            }
+
+            public void GetOrderDetailInfo()
+            {
+                Console.WriteLine($"Order Detail ID: {OrderDetailID}");
+                Console.WriteLine($"Product: {Product.ProductName}");
+                Console.WriteLine($"Quantity: {Quantity}");
+                Console.WriteLine($"Subtotal: {CalculateSubtotal()}");
+            }
+
+            public void UpdateQuantity(int newQuantity)
+            {
+                this.Quantity = newQuantity;
+                Console.WriteLine("Order quantity updated successfully");
+            }
+
+            public decimal AddDiscount(decimal discountPercentage)
+            {
+                decimal discountAmount = (CalculateSubtotal() * discountPercentage) / 100;
+                return CalculateSubtotal() - discountAmount;
+            }
+        }
+
+        public class Inventory
+        {
+            public int InventoryID;
+            public Product Product;
+            public int QuantityInStock;
+            public DateTime LastStockUpdate;
+
+            public Inventory(int inventoryID, Product product, int quantityInStock)
+            {
+                this.InventoryID = inventoryID;
+                this.Product = product;
+                this.QuantityInStock = quantityInStock;
+                this.LastStockUpdate = DateTime.Now;
+            }
+
+            public void UpdateStockQuantity(int newQuantity)
+            {
+                if (newQuantity >= 0)
+                {
+                    this.QuantityInStock = newQuantity;
+                    this.LastStockUpdate = DateTime.Now;
+                    Console.WriteLine("Stock quantity updated successful");
+                }
+                else
+                {
+                    Console.WriteLine("Invalid stock quantity");
+                }
+            }
+
+            public void AddToInventory(int quantity)
+            {
+                this.QuantityInStock += quantity;
+                this.LastStockUpdate = DateTime.Now;
+            }
+
+            public void RemoveFromInventory(int quantity)
+            {
+                if (this.QuantityInStock >= quantity)
+                {
+                    this.QuantityInStock -= quantity;
+                    this.LastStockUpdate = DateTime.Now;
+                    Console.WriteLine($"{quantity} items removed from inventory.");
+                }
+                else
+                {
+                    Console.WriteLine("Noenough stock available.");
+                }
+            }
+
+            public bool IsProductAvailable(int quantityToCheck)
+            {
+                return this.QuantityInStock >= quantityToCheck;
+            }
+
+            public decimal GetInventoryValue()
+            {
+                return QuantityInStock * Product.Price;
+            }
+
+            public bool IsLowStock(int threshold)
+            {
+                return QuantityInStock < threshold;
+            }
+
+            public bool IsOutOfStock()
+            {
+                return QuantityInStock == 0;
+            }
+
+            public void ListAllProducts()
+            {
+                Console.WriteLine($"Product: {this.Product.ProductName}, Quantity in Stock: {this.QuantityInStock}");
+            }
+        }
+    }
+}
+
