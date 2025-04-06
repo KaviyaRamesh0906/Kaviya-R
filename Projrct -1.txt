@@ -502,3 +502,148 @@ namespace TechShop_OOPS
     }
 }
 
+
+
+//Main class
+namespace TechShop_OOPS
+{
+    class Program
+    {
+        static void Main()
+        {
+            //To check customer
+            Implementation.Customer customer1 = new Implementation.Customer(1, "Shiran", "CS", "shiran@example.com", "9876543210", "Bangalore");
+            Implementation.Customer customer2 = new Implementation.Customer(2, "Rahul", "Kumar", "rahul@example.com", "9898989898", "Delhi");
+            Implementation.Customer customer3 = new Implementation.Customer(3, "Priya", "Sharma", "priya@example.com", "9765432109", "Mumbai");
+            Implementation.Customer customer4 = new Implementation.Customer(4, "Amit", "Verma", "amit@example.com", "9867543210", "Chennai");
+
+            //            Console.WriteLine("--- Customers Details ----");
+
+            customer1.GetCustomerDetails();
+            customer2.GetCustomerDetails();
+            customer3.GetCustomerDetails();
+            customer4.GetCustomerDetails();
+
+
+            //            //UPDATION OF CUSTOMER DETAIL
+            customer2.UpdateCustomerInfo("rahul@gmail.com", "9980785643", "Coimbatore");
+            customer2.GetCustomerDetails();
+
+            //----------------------------------------------------------------------------------------------------//
+
+            ////Product implementation
+            Implementation.Product product1 = new Implementation.Product(101, "Laptop", "Gaming Laptop with 16GB RAM", 75000.50m);
+            Implementation.Product product2 = new Implementation.Product(102, "Smartphone", "5G Smartphone with 128GB Storage", 25000.75m);
+            Implementation.Product product3 = new Implementation.Product(103, "Smartwatch", "Fitness Smartwatch with Heart Rate Monitor", 5000.99m);
+            Implementation.Product product4 = new Implementation.Product(104, "Headphones", "Noise Cancelling Over-Ear Headphones", 7999.49m);
+            //display
+            Console.WriteLine("----Product Details----");
+            product1.GetProductDetails();
+            product2.GetProductDetails();
+            product3.GetProductDetails();
+            product4.GetProductDetails();
+
+            // updateproduct info
+            product1.UpdateProductInfo("High-Performance Laptop", 80000.00m);
+            product2.UpdateProductInfo("6G Smartphone", 30000.00m);
+
+
+
+
+            //-------------------------------------------------------------------------------------//
+
+            //orderdetails
+            Implementation.Order order1 = new Implementation.Order(5001, customer1, product1, 2);
+            Implementation.Order order2 = new Implementation.Order(5002, customer2, product2, 1);
+            Implementation.Order order3 = new Implementation.Order(5003, customer3, product3, 3);
+            Implementation.Order order4 = new Implementation.Order(5004, customer4, product4, 4);
+
+            //display orders
+
+            Console.WriteLine("----Order Details----");
+            order1.GetOrderDetails();
+            order2.GetOrderDetails();
+            order3.GetOrderDetails();
+            order4.GetOrderDetails();
+
+            //calculatetotal amount
+            Console.WriteLine($"Total Amount for Order 1: Rs{order1.CalculateTotalAmount()}");
+
+            //updateorderstatus
+            order1.UpdateOrderStatus("Shipped");
+            order3.UpdateOrderStatus("Delivered");
+
+            //cancelanorder
+            order4.CancelOrder();
+
+            //---------------------------------------------------------------------------------------------//
+
+            //OrderDeatilsinfo
+
+            Implementation.OrderDetails orderDetail1 = new Implementation.OrderDetails(2001, order1, product1, 2);
+            Implementation.OrderDetails orderDetail2 = new Implementation.OrderDetails(2002, order2, product2, 1);
+            Implementation.OrderDetails orderDetail3 = new Implementation.OrderDetails(2003, order3, product3, 3);
+            Implementation.OrderDetails orderDetail4 = new Implementation.OrderDetails(2004, order4, product4, 4);
+
+            //display
+            Console.WriteLine("----Order Detail Info----");
+            orderDetail1.GetOrderDetailInfo();
+            orderDetail2.GetOrderDetailInfo();
+            orderDetail3.GetOrderDetailInfo();
+            orderDetail4.GetOrderDetailInfo();
+
+            //CalculateSubtotal()
+            Console.WriteLine($"Subtotal for OrderDetail1: Rs {orderDetail1.CalculateSubtotal()}");
+            Console.WriteLine($"Subtotal for OrderDetail2: Rs {orderDetail2.CalculateSubtotal()}");
+
+
+            //update
+            orderDetail1.UpdateQuantity(2);
+            orderDetail3.UpdateQuantity(4);
+
+            //ApplyDIscount
+            Console.WriteLine($"New Price: Rs{orderDetail2.AddDiscount(10)}");
+
+            //------------------------------------------------------------------------------------------------------------------//
+
+
+
+            //Inventory DEtails
+
+            Implementation.Inventory inventory1 = new Implementation.Inventory(3001, product1, 10);
+            Implementation.Inventory inventory2 = new Implementation.Inventory(3002, product2, 20);
+            Implementation.Inventory inventory3 = new Implementation.Inventory(3003, product3, 15);
+            Implementation.Inventory inventory4 = new Implementation.Inventory(3004, product4, 8);
+
+            //displayallproducts
+            Console.WriteLine("----Inventory Info----");
+            inventory1.ListAllProducts();
+            inventory2.ListAllProducts();
+            inventory3.ListAllProducts();
+            inventory4.ListAllProducts();
+
+            //addstocktoinventory
+            inventory1.AddToInventory(5);
+
+            //remove stock from inventory
+            inventory2.RemoveFromInventory(2);
+
+            //productavailability
+            Console.WriteLine($"Laptop Available? {inventory1.IsProductAvailable(2)}");
+
+            //stock level check
+            Console.WriteLine($"Headphones Low Stock? {inventory3.IsLowStock(10)}");
+
+            //outof stock
+            Console.WriteLine($"Smartwatch Out of Stock? {inventory4.IsOutOfStock()}");
+
+            //total value
+            Console.WriteLine($"Total Inventory Value: Rs{inventory1.GetInventoryValue()}");
+            //-------------------------------------------------------------------------------------------//
+
+            Console.ReadLine();
+        }
+    }
+}
+
+
