@@ -1,0 +1,18 @@
+using System.Linq.Expressions;
+using TechShopOops;
+
+namespace TechShopOops
+{
+    public class Program
+    {
+        static void Main(string[] args)
+        {
+            
+                
+                Console.WriteLine("   WELCOME TO TECHSHOP MANAGEMENT   ");
+                TechShopUI ui = new TechShopUI(); 
+                ui.ShowMainMenu();
+                Console.WriteLine("Thank you for using TechShop. Goodbye!");
+            }
+        }
+    }

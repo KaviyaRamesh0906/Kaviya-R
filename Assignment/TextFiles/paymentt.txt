@@ -1,0 +1,36 @@
+namespace TechShopOops
+{
+        public class Payment
+        {
+            public int OrderID { get; set; }
+            public decimal AmountPaid { get; set; }
+            public string Status { get; set; }
+
+            public Payment(int orderId, decimal amount, string status)
+            {
+                if (orderId <= 0)
+                {
+                    throw new PaymentFailedException("Order ID must be a positive number.");
+                }
+
+                if (amount < 0)
+                {
+                    throw new PaymentFailedException("Amount paid cannot be negative.");
+                }
+
+                if (string.IsNullOrWhiteSpace(status))
+                {
+                    throw new PaymentFailedException("Payment statusshould not be empty.");
+                }
+
+                OrderID = orderId;
+                AmountPaid = amount;
+                Status = status;
+            }
+            public void DisplayPayment()
+            {
+
+                Console.WriteLine($"Order ID: {OrderID}  Amount Paid: {AmountPaid}  Status: {Status}");
+            }
+        }
+    }

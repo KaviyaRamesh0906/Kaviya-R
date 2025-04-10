@@ -1,0 +1,65 @@
+namespace TechShopOops
+{
+        public class Product
+        {
+            private int productID;
+            private string productName;
+            private string description;
+            private decimal price;
+
+            public Product(int id, string name, string desc, decimal prc)
+            {
+                productID = id;
+                productName = name;
+                description = desc;
+                Price = prc;
+            }
+
+            public int ProductID
+            {
+                get { return productID; }
+            }
+
+            public string ProductName
+            {
+                get { return productName; }
+                set { productName = value; }
+            }
+            public string Description
+            {
+                get { return description; }
+                set { description = value; }
+            }
+
+            public decimal Price
+            {
+                get { return price; }
+                set
+                {
+                    if (value <= 0)
+                    {
+                        throw new ArgumentException("Price must be positive.");
+                    }
+                    price = value;
+                }
+            }
+
+            public void GetProductDetails()
+            {
+                Console.WriteLine("Product: " + productName + ", Description: " + description + ", Price: " + price);
+            }
+
+            public void UpdateProductInfo(string name, string description, decimal price)
+            {
+                ProductName = name;
+                Description = description;
+                Price = price;
+            }
+
+            public bool IsProductInStock(int quantityInStock)
+            {
+                return quantityInStock > 0;
+            }
+        }
+    }
+
