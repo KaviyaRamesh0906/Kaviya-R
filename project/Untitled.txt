@@ -1,0 +1,9 @@
+
+
+        //List<Product> SortByLowPriceFirst()
+
+        //List<Product> GetProductsByCategory(string category)
+
+        //List<Product> GetProductsByPriceRange(decimal low , decimal high)
+
+ 

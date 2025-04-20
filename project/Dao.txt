@@ -1,0 +1,475 @@
+namespace TechShop
+{
+        class TechshopDAO
+        {
+            //customer dao
+            public interface ICustomerDAO
+            {
+                void AddCustomer(Customer customer);
+                void UpdateCustomer(int id, string email, string phone, string address);
+                void DeleteCustomer(int id);
+                Customer GetCustomerById(int id);
+                List<Customer> GetAllCustomers();
+            }
+
+            public class CustomerDAOImpl : ICustomerDAO
+            {
+                private List<Customer> customerList;
+
+                public CustomerDAOImpl()
+                {
+                    customerList = new List<Customer>();
+                }
+
+                public void AddCustomer(Customer customer)
+                {
+                    foreach (Customer c in customerList)
+                    {
+                        if (c.CustomerID == customer.CustomerID)
+                        {
+                            throw new InvalidDataException("Customer with this ID already exists.");
+                        }
+                    }
+
+
+                    customerList.Add(customer);
+                    Console.WriteLine("Customer added successfully.");
+                }
+
+                public void UpdateCustomer(int id, string email, string phone, string address)
+                {
+                    Customer list = GetCustomerById(id);
+                    list.UpdateCustomerInfo(email, phone, address);
+
+
+                }
+
+                public void DeleteCustomer(int id)
+                {
+                    Customer cid = GetCustomerById(id);
+                    customerList.Remove(cid);
+                    Console.WriteLine("Customer deleted successfully.");
+                }
+
+                public Customer GetCustomerById(int id)
+                {
+                    foreach (Customer c in customerList)
+                    {
+                        if (c.CustomerID == id)
+                        {
+                            return c;
+                        }
+                    }
+                    throw new InvalidDataException("Customer not found.");
+                }
+
+                public List<Customer> GetAllCustomers()
+                {
+                    return customerList;
+                }
+
+
+
+
+                //productDAO
+                public interface IProductDAO
+                {
+                    void AddProduct(Product product);
+                    void UpdateProduct(int id, string name, string description, decimal price);
+                    void DeleteProduct(int id);
+                    Product GetProductById(int id);
+                    List<Product> GetAllProducts();
+                }
+                public class ProductDAOImpl : IProductDAO
+                {
+                    private List<Product> productList;
+
+                    public ProductDAOImpl()
+                    {
+                        productList = new List<Product>();
+                    }
+
+                    public void AddProduct(Product product)
+                    {
+                        foreach (Product p in productList)
+                        {
+                            if (p.ProductID == product.ProductID)
+                            {
+                                throw new InvalidDataException("Product with this ID already exists.");
+                            }
+                        }
+                        productList.Add(product);
+                        Console.WriteLine("Product added successfully.");
+                    }
+
+                    public void UpdateProduct(int id, string name, string description, decimal price)
+                    {
+                        Product list = GetProductById(id);
+                        list.UpdateProductInfo(name, description, price);
+                        Console.WriteLine("Product updated successfully.");
+                    }
+
+                    public void DeleteProduct(int id)
+                    {
+                        Product pid = GetProductById(id);
+                        productList.Remove(pid);
+                        Console.WriteLine("Product deleted successfully.");
+                    }
+
+                    public Product GetProductById(int id)
+                    {
+                        foreach (Product p in productList)
+                        {
+                            if (p.ProductID == id)
+                            {
+                                return p;
+                            }
+                        }
+                        throw new InvalidDataException("Product not found.");
+                    }
+
+                    public List<Product> GetAllProducts()
+                    {
+                        return productList;
+                    }
+                }
+
+
+            //order
+            public interface IOrderDAO
+            {
+                void AddOrder(Order order);
+                void UpdateOrderStatus(int orderId, string newStatus);
+
+                void DeleteOrder(int id);
+                void CancelOrder(int orderid);
+
+                Order GetOrderById(int id);
+                List<Order> GetAllOrders();
+            }
+            public class OrderDAOImpl : IOrderDAO
+            {
+                private List<Order> orderList;
+
+                public OrderDAOImpl()
+                {
+                    orderList = new List<Order>();
+                }
+
+                public void AddOrder(Order order)
+                {
+                    foreach (Order o in orderList)
+                    {
+                        if (o.OrderID == order.OrderID)
+                        {
+                            throw new InvalidDataException("Order with this ID already exists.");
+                        }
+                    }
+
+                    orderList.Add(order);
+                    Console.WriteLine("Order added successfully.");
+                }
+
+                public void UpdateOrderStatus(int orderId, string newStatus)
+                {
+                    Order order = GetOrderById(orderId);
+                    order.UpdateOrderStatus(newStatus);
+                    Console.WriteLine("Order status updated.");
+                }
+
+
+                public void CancelOrder(int orderid)
+                {
+                    Order order = GetOrderById(orderid);
+                    order.CancelOrder();
+                    Console.WriteLine("Order canceled successfully.");
+                }
+
+                public void DeleteOrder(int id)
+                {
+                    Order order = GetOrderById(id);
+                    orderList.Remove(order);
+                    Console.WriteLine(" Order deleted successfully.");
+                }
+
+                public Order GetOrderById(int id)
+                {
+                    foreach (Order o in orderList)
+                    {
+                        if (o.OrderID == id)
+                        {
+                            return o;
+                        }
+                    }
+                    throw new InvalidDataException("Order not found.");
+                }
+
+                public List<Order> GetAllOrders()
+                {
+                    return orderList;
+                }
+            }
+
+
+            //order detail
+
+            public interface IOrderDetailDAO
+                {
+                    void AddOrderDetail(OrderDetail detail);
+                    void UpdateOrderDetail(int id, int quantity, decimal discount);
+                    void DeleteOrderDetail(int id);
+                    OrderDetail GetOrderDetailById(int id);
+                    List<OrderDetail> GetAllOrderDetails();
+                }
+
+                public class OrderDetailDAOImpl : IOrderDetailDAO
+                {
+                    private List<OrderDetail> orderDetailList;
+
+                    public OrderDetailDAOImpl()
+                    {
+                        orderDetailList = new List<OrderDetail>();
+                    }
+
+                    public void AddOrderDetail(OrderDetail detail)
+                    {
+                        foreach (OrderDetail od in orderDetailList)
+                        {
+                            if (od.OrderDetailID == detail.OrderDetailID)
+                            {
+                                throw new InvalidDataException("Order detail with this ID already exists.");
+                            }
+                        }
+
+                        orderDetailList.Add(detail);
+                        Console.WriteLine("Order detail added successfully.");
+                    }
+
+                    public void UpdateOrderDetail(int id, int quantity, decimal discount)
+                    {
+                        OrderDetail existing = GetOrderDetailById(id);
+                        existing.UpdateQuantity(quantity);
+                        existing.AddDiscount(discount);
+                        Console.WriteLine("OrderDetail updated successfully.");
+                    }
+
+                    public void DeleteOrderDetail(int id)
+                    {
+                        OrderDetail existing = GetOrderDetailById(id);
+                        orderDetailList.Remove(existing);
+                        Console.WriteLine("Order detail deleted successfully.");
+                    }
+
+                    public OrderDetail GetOrderDetailById(int id)
+                    {
+                        foreach (OrderDetail od in orderDetailList)
+                        {
+                            if (od.OrderDetailID == id)
+                            {
+                                return od;
+                            }
+                        }
+                        throw new InvalidDataException("Order detail not found.");
+                    }
+
+                    public List<OrderDetail> GetAllOrderDetails()
+                    {
+                        return orderDetailList;
+                    }
+                }
+
+                //inventory dao
+
+                public interface IInventoryDAO
+                {
+                    void AddInventory(Inventory inventory);
+                    void RemoveInventory(int inventoryID);
+                    void UpdateStock(int inventoryID, int newQuantity);
+                    Inventory GetInventoryById(int inventoryID);
+                    List<Inventory> GetAllInventory();
+                    bool IsProductAvailable(int inventoryID, int quantityToCheck);
+                    List<Inventory> ListLowStockProducts(int threshold);
+                    List<Inventory> ListOutOfStockProducts();
+                }
+
+
+                public class InventoryDAOImpl : IInventoryDAO
+                {
+                    private List<Inventory> inventoryList = new List<Inventory>();
+
+                    public void AddInventory(Inventory inventory)
+                    {
+                        inventoryList.Add(inventory);
+                    }
+
+                    public void RemoveInventory(int inventoryID)
+                    {
+                        Inventory inventory = GetInventoryById(inventoryID);
+                        if (inventory != null)
+                        {
+                            inventoryList.Remove(inventory);
+                        }
+                        else
+                        {
+                            throw new InvalidDataException("Inventory ID not found.");
+                        }
+                    }
+
+                    public void UpdateStock(int inventoryID, int newQuantity)
+                    {
+                        Inventory inventory = GetInventoryById(inventoryID);
+                        if (inventory != null)
+                        {
+                            inventory.UpdateStockQuantity(newQuantity);
+                        }
+                        else
+                        {
+                            throw new InvalidDataException("Inventory not found for update.");
+                        }
+                    }
+
+                    public Inventory GetInventoryById(int inventoryID)
+                    {
+                        foreach (Inventory inv in inventoryList)
+                        {
+                            if (inv.InventoryID == inventoryID)
+                            {
+                                return inv;
+                            }
+                        }
+                        return null;
+                    }
+
+                    public List<Inventory> GetAllInventory()
+                    {
+                        return inventoryList;
+                    }
+
+                    public bool IsProductAvailable(int inventoryID, int quantityToCheck)
+                    {
+                        Inventory inventory = GetInventoryById(inventoryID);
+                        if (inventory != null)
+                        {
+                            return inventory.IsProductAvailable(quantityToCheck);
+                        }
+                        else
+                        {
+                            throw new InvalidDataException("Inventory not found.");
+                        }
+                    }
+
+                    public List<Inventory> ListLowStockProducts(int threshold)
+                    {
+                        List<Inventory> lowStockList = new List<Inventory>();
+                        foreach (Inventory inv in inventoryList)
+                        {
+                            if (inv.GetQuantityInStock() < threshold)
+                            {
+                                lowStockList.Add(inv);
+                            }
+                        }
+                        return lowStockList;
+                    }
+
+                    public List<Inventory> ListOutOfStockProducts()
+                    {
+                        List<Inventory> outOfStockList = new List<Inventory>();
+                        foreach (Inventory inv in inventoryList)
+                        {
+                            if (inv.GetQuantityInStock() == 0)
+                            {
+                                outOfStockList.Add(inv);
+                            }
+                        }
+                        return outOfStockList;
+                    }
+
+
+                    //PAYMENT 
+                    public interface IPaymentDAO
+                    {
+                        void AddPayment(Payment payment);
+                        void UpdatePaymentStatus(int orderId, string newStatus);
+                        void DeletePayment(int orderId);
+                        Payment GetPaymentByOrderId(int orderId);
+                        List<Payment> GetAllPayments();
+                    }
+                    public class PaymentDAOImpl : IPaymentDAO
+                    {
+                        private List<Payment> paymentList;
+
+                        public PaymentDAOImpl()
+                        {
+                            paymentList = new List<Payment>();
+                        }
+
+                        public void AddPayment(Payment payment)
+                        {
+                            foreach (Payment p in paymentList)
+                            {
+                                if (p.OrderID == payment.OrderID)
+                                {
+                                    throw new InvalidDataException("Payment for this Order ID already exists.");
+                                }
+                            }
+
+                            paymentList.Add(payment);
+                            Console.WriteLine("Payment added successfully.");
+                        }
+
+                        public void UpdatePaymentStatus(int orderId, string newStatus)
+                        {
+                            Payment payment = GetPaymentByOrderId(orderId);
+                            if (payment != null)
+                            {
+                                if (string.IsNullOrWhiteSpace(newStatus))
+                                {
+                                    throw new PaymentFailedException("New status cannot be empty.");
+                                }
+
+                                payment.Status = newStatus;
+                                Console.WriteLine("Payment status updated.");
+                            }
+                        }
+
+                        public void DeletePayment(int orderId)
+                        {
+                            Payment payment = GetPaymentByOrderId(orderId);
+                            if (payment != null)
+                            {
+                                paymentList.Remove(payment);
+                                Console.WriteLine("Payment deleted successfully.");
+                            }
+                        }
+
+                        public Payment GetPaymentByOrderId(int orderId)
+                        {
+                            foreach (Payment p in paymentList)
+                            {
+                                if (p.OrderID == orderId)
+                                {
+                                    return p;
+                                }
+                            }
+                            throw new InvalidDataException("Payment not found for the given Order ID.");
+                        }
+
+                        public List<Payment> GetAllPayments()
+                        {
+                            return paymentList;
+                        }
+                    }
+
+
+
+
+
+
+                }
+            }
+        }
+    }
+
+
+
+

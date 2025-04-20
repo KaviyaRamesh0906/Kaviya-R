@@ -1,0 +1,79 @@
+namespace TechShopOops
+{
+    public class OrderDetail
+    {
+        private int orderDetailID;
+        private Order order;
+        private Product product;
+        private int quantity;
+        private decimal discount;
+
+        public OrderDetail(int id, Order ord, Product prod, int qty)
+        {
+            if (prod == null)
+            {
+                throw new IncompleteOrderException("OrderDetail must include a valid Product.");
+            }
+
+            orderDetailID = id;
+            order = ord;
+            product = prod;
+            Quantity = qty;
+            discount = 0;
+        }
+
+        public int OrderDetailID
+        {
+            get { return orderDetailID; }
+        }
+
+        public Order Order
+        {
+            get { return order; }
+        }
+
+        public Product Product
+        {
+            get { return product; }
+        }
+
+        public int Quantity
+        {
+            get { return quantity; }
+            set
+            {
+                if (value <= 0)
+                {
+                    throw new InvalidDataException("Quantity must be positive.");
+                }
+                quantity = value;
+            }
+        }
+
+        public decimal CalculateSubtotal()
+        {
+            return (product.Price * quantity) * (1 - discount);
+        }
+
+        public void GetOrderDetailInfo()
+        {
+            Console.WriteLine("OrderDetail ID: " + orderDetailID + ", Product: " + product.ProductName + ", Quantity: " + quantity + ", Subtotal: " + CalculateSubtotal());
+        }
+
+        public void UpdateQuantity(int newQuantity)
+        {
+            Quantity = newQuantity;
+        }
+
+        public void AddDiscount(decimal discountPercent)
+        {
+            if (discountPercent < 0 || discountPercent > 1)
+            {
+                throw new InvalidDataException("Discount must be between 0 and 1.");
+            }
+            discount = discountPercent;
+        }
+    }
+}
+
+
